@@ -1,0 +1,31 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>web/3.png</file>
+        <file>web/ali.png</file>
+        <file>web/ali1.png</file>
+        <file>web/login.png</file>
+        <file>web/logo.png</file>
+        <file>web/logo1.png</file>
+        <file>web/mail.png</file>
+        <file>web/mail1.png</file>
+        <file>web/ml.png</file>
+        <file>web/ml1.png</file>
+        <file>web/notify.png</file>
+        <file>web/notify1.png</file>
+        <file>web/notify_black.png</file>
+        <file>web/notify_black1.png</file>
+        <file>web/plus.png</file>
+        <file>web/serch.png</file>
+        <file>web/shipping.png</file>
+        <file>web/shipping1.png</file>
+        <file>web/stat.png</file>
+        <file>web/stat1.png</file>
+        <file>web/v.png</file>
+        <file>winLogi.qml</file>
+        <file>winRegi.qml</file>
+        <file>ListingSheep.qml</file>
+        <file>addItemeBay.qml</file>
+        <file>aliViewFile.qml</file>
+    </qresource>
+</RCC>
