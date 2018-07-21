@@ -103,12 +103,12 @@ void RequestManager::getListingreq()
     QObject::connect(replyAcc, SIGNAL(readyRead()), this, SLOT(replRead()));
 }
 
-void RequestManager::addFixPriceeBayReqest(QString title, QString discription, QString listImg, int category, QString price, QString count)
+void RequestManager::addFixPriceeBayReqest(QString title, QString discription, QString listImg, int category, QString price, QString count, QString urlAliItem)
 {
     qDebug()<<"strt add fix price item";
     //appid,title, category, price, count, discription, listURLPhoto
 
-    QByteArray param = QString("appid=%1&title=%2&category=%3&price=%4&count=%5&discription=%6&listURLPhoto=%7").arg(UserInstant::getInstance()->appid, title, QString::number(category), price, count, discription, listImg).toUtf8();
+    QByteArray param = QString("appid=%1&title=%2&category=%3&price=%4&count=%5&discription=%6&listURLPhoto=%7&paypalemail=%8&aliurl=%9").arg(UserInstant::getInstance()->appid, title, QString::number(category), price, count, discription, listImg, UserInstant::getInstance()->payPalmail, "urlAliItem").toUtf8();
     qDebug()<<param;
     replyAcc = manager->post(createRequest(QUrl(host+"/ebay/addIremFixPrice")), param);
     QObject::connect(replyAcc,SIGNAL(finished()), this, SLOT(repAddFixPriceeBay()));

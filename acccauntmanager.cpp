@@ -3,8 +3,11 @@
 #include <QObject>
 #include <QDebug>
 #include <QFile>
+#include <QDir>
+#include <QVariant>
 #include "userinstant.h"
 #include <QMessageBox>
+
 
 
 
@@ -45,7 +48,7 @@ void AcccauntManager::getListing()
 
 void AcccauntManager::sendDataAddItemFixPriceeBay(QString title, QString discription, QString listImg, int category, QString price, QString count, QString urlAliItem)
 {
-    h->addFixPriceeBayReqest(title, discription, listImg, category, price, count);
+    h->addFixPriceeBayReqest(title, discription, listImg, category, price, count, urlAliItem);
     QObject::connect(h, SIGNAL(resultAddFixPrice(QJsonDocument)), this, SLOT(resultAddingFixPriceeBay(QJsonDocument)));
 }
 
@@ -54,8 +57,15 @@ void AcccauntManager::resultAddingFixPriceeBay(QJsonDocument document)
     if (document["error"].toString() != "none"){
         qDebug()<< document["error"];
        emit toQMLErrorMessage(document["error"].toString());
+
     }
     qDebug()<<document["result"];
+    if (document["result"].toString() == "successfully"){
+        qDebug()<<document["itemId"].toString();
+        qDebug()<<document["aliurl"].toString();
+    }
+
+    emit toQMLendAddItem();
     qDebug()<<document["itemId"];
 }
 
@@ -63,12 +73,59 @@ void AcccauntManager::resultLogin(QJsonDocument document){
     qDebug()<<document["result"];
     qDebug()<<document["eBayAuthURL"];
     UserInstant::getInstance()->appid= document["appid"].toString();
+    saveAppId();
+    qDebug()<<"resultLogin";
     if (document["eBayAuthURL"].toString() != "none"){
         h->waitToken();
         QObject::connect(h, SIGNAL(resultAuthEbay(QJsonDocument)), this, SLOT(resultEbayAuth(QJsonDocument)));
     }
 
     emit toQMLLogin(document["result"].toString(), document["eBayAuthURL"].toString());
+
+}
+
+void AcccauntManager::writeJsFile(QString nameFil, QVariantMap map)
+{
+    qDebug()<<"--satart saving JS";
+    qDebug()<<map;
+    QString fromFile;
+    QFile *file = new QFile( "../../../" + nameFil);
+    if (file->exists()){
+
+        if (!file->open(QIODevice::ReadOnly | QIODevice::Text)){
+            qDebug()<<"can't open file";
+        }
+        fromFile = file->readAll();
+        file->close();
+
+        QJsonDocument sd = QJsonDocument::fromJson(fromFile.toUtf8());
+        qWarning() << sd.isNull();
+
+        QJsonObject object = QJsonObject::fromVariantMap(map);
+        QJsonDocument document;
+        document.setObject(object);
+
+        qDebug()<< document;
+        QFile jsonFile( "../../../"+nameFil);
+        jsonFile.open(QIODevice::WriteOnly);
+        jsonFile.write(document.toJson());
+        jsonFile.close();
+
+    } else{
+        qDebug()<<"file not exist";
+    }
+}
+
+void AcccauntManager::saveAppId()
+{
+
+    QVariantMap newJs;
+    qDebug()<<UserInstant::getInstance()->appid;
+    qDebug()<<"----";
+//    qDebug()<< sd;
+    newJs.insert("appid", UserInstant::getInstance()->appid);
+    newJs.insert("paypalemail", UserInstant::getInstance()->payPalmail);
+    writeJsFile("setting.json", newJs);
 
 }
 
@@ -103,6 +160,7 @@ void AcccauntManager::resultGetListing(QJsonDocument document)
 void AcccauntManager::resultEnther(QJsonDocument document)
 {
     if (document["result"] == "successfully"){
+        saveAppId();
         emit toQMLshowMainView();
     }
     else{
@@ -114,7 +172,23 @@ void AcccauntManager::getCategorys(){
     QString fromFile;
 
 
-    QFile *file = new QFile("/Users/administrator/build-myLIsting-Desktop_Qt_5_11_1_clang_64bit-Release/categorys.json");
+    QDir dir(QDir::current());
+//        dir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+//        dir.setSorting(QDir::Size | QDir::Reversed);
+//    dir.cdUp();
+//    dir.cdUp();
+//    dir.cdUp();
+//        QFileInfoList list = dir.entryInfoList();
+//        qDebug() << "     Bytes Filename";
+//        for (int i = 0; i < list.size(); ++i) {
+//            QFileInfo fileInfo = list.at(i);
+//            qDebug() << qPrintable(QString("%1 %2").arg(fileInfo.size(), 10)
+//                                                    .arg(fileInfo.fileName()));
+
+//        }
+
+    qDebug()<< dir.currentPath();
+    QFile *file = new QFile( "../../../categorys.json");
     if (file->exists()){
 //        file->setFileName("categorys.json");
         if (!file->open(QIODevice::ReadOnly | QIODevice::Text)){
@@ -125,6 +199,7 @@ void AcccauntManager::getCategorys(){
 
         QJsonDocument sd = QJsonDocument::fromJson(fromFile.toUtf8());
         qWarning() << sd.isNull();
+        qDebug()<<"category try";
         qDebug()<<sd["items"][0]["CategotyID"].toInt();
         emit toQMLsendCategor(sd.toVariant());
     } else{

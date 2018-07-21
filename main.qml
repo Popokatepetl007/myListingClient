@@ -12,7 +12,7 @@ ApplicationWindow {
     property var listCategoty: []
 
 
-    function setItemAliToEbay(title, price, discript, photoArr){
+    function setItemAliToEbay(title, price, discript, photoArr, aliUrl){
 
 //        console.log(title)
 //        console.log(price)
@@ -21,7 +21,7 @@ ApplicationWindow {
         delegateAcc.getCategorys()
         addItemeBay.show()
 
-        main.sendToAdd(title, discript, price, photoArr)
+        main.sendToAdd(title, discript, price, photoArr, aliUrl)
 
 
     }
@@ -61,23 +61,34 @@ ApplicationWindow {
 
     id: main
     visible: true
-    width: 1200
-    height: 700
+    width: Screen.desktopAvailableWidth
+    height: Screen.desktopAvailableHeight
     title: qsTr("MyListing")
     color: "#2B2D3C"
 
-    signal sendToAdd(string title, string discript, string price, var picArr)
+    signal sendToAdd(string title, string discript, string price, var picArr, string aliUrl)
 
     ListModel{
         id: listData
     }
 
+    MouseArea{
+        id: globalArea
+        anchors.fill: parent
+    }
 
     Connections{
         target: delegateAcc
 
+        onToQMLendAddItem:{
+
+        }
+
         onToQMLshowMainView:{
             mainView.visible = true
+            console.log(Screen.desktopAvailableWidth)
+            console.log(Screen.desktopAvailableHeight)
+            console.log(listingView.width)
             delegateAcc.getListing()
             busyIndicator.running = true
         }
@@ -360,22 +371,113 @@ ApplicationWindow {
                 id: listingView
 //                anchors.fill: parent
                 anchors { left: parent.left; right: parent.right; top: headerWork.bottom; bottom: workView.bottom }
+
                 color: "#2B2D3C"
                 Item {
                     id: head
                     anchors {top: parent.top; left: parent.left; right: parent.right}
-                    height: 20
+                    height: 25
                     z: 1
-                    Text{
-                        anchors.left: parent.left
-                        anchors.leftMargin: 40
-                        anchors.verticalCenter: parent.verticalCenter
-                        color: "#fefefe"
-                        text: "Фото"
-                        wrapMode: Text.NoWrap
-                        fontSizeMode: Text.FixedSize
-                        font.pointSize: 16
-                        horizontalAlignment: Text.AlignHCenter
+
+                    Rectangle{
+                        anchors.fill: parent
+                        color: "#2B2D3C"
+                        Text{
+                            id: photoInHead
+                            anchors.left: parent.left
+                            anchors.leftMargin: 18
+//                            anchors.right: nameInHead.left
+                            width: listingView.width/12.55
+                            anchors.verticalCenter: parent.verticalCenter
+                            color: "#fefefe"
+                            text: "Фото"
+                            anchors.verticalCenterOffset: 0
+
+                            wrapMode: Text.NoWrap
+                            fontSizeMode: Text.FixedSize
+                            font.pointSize: 13
+                            horizontalAlignment: Text.AlignLeft
+                        }
+
+                        Text{
+                            id: nameInHead
+
+                            width: listingView.width/4
+                            anchors.left: photoInHead.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            color: "#fefefe"
+                            text: "Название"
+                            anchors.verticalCenterOffset: 0
+
+                            wrapMode: Text.NoWrap
+                            fontSizeMode: Text.FixedSize
+                            font.pointSize: 13
+                            horizontalAlignment: Text.AlignLeft
+                        }
+                        Text{
+                            id: priceInHead
+
+                            width: listingView.width/12.55
+                            anchors.left: nameInHead.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            color: "#fefefe"
+                            text: "Цена"
+                            anchors.verticalCenterOffset: 0
+
+                            wrapMode: Text.NoWrap
+                            fontSizeMode: Text.FixedSize
+                            font.pointSize: 12
+                            horizontalAlignment: Text.AlignLeft
+                        }
+
+                        Text{
+                            id: profitInHead
+
+//                            anchors.leftMargin: 100
+                            anchors.left: priceInHead.right
+                            width: listingView.width/4
+                            height: 19
+                            anchors.verticalCenter: parent.verticalCenter
+                            color: "#fefefe"
+                            text: "Прибыль"
+                            anchors.verticalCenterOffset: 0
+
+                            wrapMode: Text.NoWrap
+                            fontSizeMode: Text.FixedSize
+                            font.pointSize: 13
+                            horizontalAlignment: Text.AlignLeft
+                        }
+
+                        Text{
+                            id: countInHead
+
+                            width: listingView.width/12.55
+                            anchors.left: profitInHead.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            color: "#fefefe"
+                            text: "Кол-во"
+                            anchors.verticalCenterOffset: 0
+                            anchors.rightMargin: 333
+                            wrapMode: Text.NoWrap
+                            fontSizeMode: Text.FixedSize
+                            font.pointSize: 13
+                            horizontalAlignment: Text.AlignLeft
+                        }
+                        Text{
+                            id: soldInHead
+                            width: listingView.width/4
+                            anchors.left: countInHead.right
+//                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            color: "#fefefe"
+                            text: "Продано"
+                            anchors.verticalCenterOffset: 0
+
+                            wrapMode: Text.NoWrap
+                            fontSizeMode: Text.FixedSize
+                            font.pointSize: 12
+                            horizontalAlignment: Text.AlignLeft
+                        }
                     }
 
                 }
@@ -461,8 +563,10 @@ ApplicationWindow {
     Window{
         id: addItemeBay
         title: "Карточка товара"
-        width: 800
-        height: 600
+//        width: 800
+//        height: 600
+        width: Screen.desktopAvailableWidth/1.8
+        height: Screen.desktopAvailableHeight/1.365
         maximumHeight: height
         maximumWidth: width
         minimumHeight: height

@@ -11,6 +11,7 @@ private:
 public:
     QString appid;
     QString eBaytoken;
+    QString payPalmail;
     int m_value;
     static UserInstant* getInstance();
 };

@@ -42,7 +42,7 @@ public:
     void getListingreq();
     void postPhoto();
     void itemFromAli(QString url);
-    void addFixPriceeBayReqest(QString title, QString discription, QString listImg, int category, QString price, QString count);
+    void addFixPriceeBayReqest(QString title, QString discription, QString listImg, int category, QString price, QString count, QString urlAliItem);
 
 signals:
     void resultAuth(QJsonDocument t);

@@ -12,6 +12,20 @@ Item {
     height: 600
 
 
+    MouseArea{
+        id: addMainarea
+        anchors.fill: parent
+
+    }
+
+    Connections{
+        target: delegateAcc
+
+        onToQMLendAddItem:{
+            addMainarea.cursorShape = Qt.SizeHorCursor
+        }
+    }
+
 
     Connections{
         target: addItemeBay
@@ -22,6 +36,7 @@ Item {
             titleField.text = ""
             discriptionEdit.text = ''
             priceField.text = ''
+            aliurl = ""
             labelCat.text = "Категория"
             phList.clear()
 
@@ -33,8 +48,10 @@ Item {
         target: main
         onSendToAdd:{
             aliTitleField.text = title
-            discriptionEdit.text = discript
+            var result = discript.replace(/<[^>]+>/g,'')
+            discriptionEdit.text = result
             priceAliField.text = parseFloat(price)
+            aliurl= aliUrl
 
             catId = 0
             urlPhArr = []
@@ -57,6 +74,7 @@ Item {
     property var strongLen: []
     property var urlPhArr: []
     property var filePhArr: []
+    property string aliurl: ""
 
     function nameCategory(id){
         for (var i=0; i< listCategoty.length; i++){
@@ -413,9 +431,10 @@ Item {
                 var dis = discriptionEdit.text
                 var repapattdd = new RegExp(';', 'g')
                 dis = dis.replace(repapattdd, '444')
+              addMainarea.cursorShape = Qt.WaitCursor
 
                var re = new RegExp(',', 'g');
-                delegateAcc.sendDataAddItemFixPriceeBay(titleField.text, dis, urlPhArr.toString().replace(re, "@"), catId, priceField.text, countField1.text, "non"  )
+                delegateAcc.sendDataAddItemFixPriceeBay(titleField.text, dis, urlPhArr.toString().replace(re, "@"), catId, priceField.text, countField1.text, aliurl  )
             }
 
         }
@@ -521,29 +540,54 @@ Item {
             selectByMouse: true
         }
 
-        TextEdit {
-            id: discriptionEdit
+
+        Rectangle{
+
             x: 31
-            y: 264
+            y: 262
+
+            width: 327
+            height: 295
+            color: "white"
+
+        ScrollView{
+
+            x: 0
+            y: 0
+
+            width: 327
+            height: 295
+
+
+        TextArea {
+            id: discriptionEdit
+            x: 0
+            y: 0
             width: 327
             height: 295
             text: ""
-            renderType: Text.NativeRendering
-            selectByMouse: true
+            renderType: Text.QtRendering
+
             wrapMode: Text.WrapAnywhere
 
             horizontalAlignment: Text.AlignLeft
-            selectionColor: "#bde12d"
+            selectionColor: "#2d75e1"
             cursorVisible: true
             textFormat: Text.PlainText
-            z: 2
+            z: 3
+
+
             font.pixelSize: 10
-            Rectangle{
-                anchors.fill: parent
-                color: "white"
-                z: -1
-            }
+
+
+
         }
+
+
+
+        }
+}
+
 
         Label {
             id: label

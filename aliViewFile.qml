@@ -134,7 +134,7 @@ Item {
 
                 onClicked: {
 
-                    setItemAliToEbay(titleAli, price, discription, picArr)
+                    setItemAliToEbay(titleAli, price, discription, picArr, webAli.url)
 
 
                 }

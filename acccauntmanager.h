@@ -23,6 +23,9 @@ private:
 
 public:
     explicit AcccauntManager(QObject *parent = nullptr);
+
+
+
     void needLog(){
 
         if (UserInstant::getInstance()->appid == "none"){
@@ -88,7 +91,7 @@ public:
     }
 
 
-
+    void writeJsFile(QString nameFil, QVariantMap map);
 
 signals:
     void toQMLLogin(QString result, QString eBayUrl);
@@ -101,7 +104,9 @@ signals:
     void toQMLsendListing(QVariant data);
     void toQMLsendCategor(QVariant data);
     void toQMLErrorMessage(QString err);
+    void toQMLendAddItem();
 public slots:
+    void saveAppId();
     void login(QString login, QString password);
     void registr(QString login, QString password, QString email);
     void resultLogin(QJsonDocument document);

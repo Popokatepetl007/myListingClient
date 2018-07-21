@@ -45,4 +45,7 @@ HEADERS += \
     acccauntmanager.h
 
 DISTFILES += \
-    texttext
+    texttext \
+#    categorys.json\
+    categorys.json \
+    setting.json
