@@ -31,10 +31,18 @@ public:
         if (UserInstant::getInstance()->appid == "none"){
             emit toQMLneedLogin();
         }else{
+            if (UserInstant::getInstance()->payPalmail == "none"){
+
+                emit toQMLneedPayPalmail();
+            }
             h->enter();
             QObject::connect(h, SIGNAL(resultEnter(QJsonDocument)), this, SLOT(resultEnther(QJsonDocument)));
         }
+
+
     }
+
+
 
     void postPtotoAcc(){
 
@@ -105,10 +113,12 @@ signals:
     void toQMLsendCategor(QVariant data);
     void toQMLErrorMessage(QString err);
     void toQMLendAddItem();
+    void toQMLneedPayPalmail();
 public slots:
     void saveAppId();
     void login(QString login, QString password);
     void registr(QString login, QString password, QString email);
+    void exitAcc();
     void resultLogin(QJsonDocument document);
     void resultREgistr(QJsonDocument document);
     void resultEbayAuth(QJsonDocument document);
@@ -119,6 +129,8 @@ public slots:
     void resultAddingFixPriceeBay(QJsonDocument document);
     void getCategorys();
     void getItemAli(QString url);
+    void setPayPalmail(QString mail);
+
 };
 
 #endif // ACCCAUNTMANAGER_H

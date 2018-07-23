@@ -37,7 +37,7 @@ public:
     void auth(QString login, QString password);
     void registr(QString login, QString password, QString email);
     void enter();
-    void exit();
+    void exit(QString appid);
     void waitToken();
     void getListingreq();
     void postPhoto();

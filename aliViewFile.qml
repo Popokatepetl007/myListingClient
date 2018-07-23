@@ -41,15 +41,133 @@ Item {
 
     Rectangle{
         id: aliViewInn
+        Rectangle{
+            id: headerAli
+            x: 0
+            y: 0
+            width: workView.width
+            height: 55
+            color: "#2481CE"
+            z: 2
 
+            Button{
+                id: backButton
+                x: 20
+                anchors.verticalCenter: parent.verticalCenter
+                width: 32
+                height: 20
+                display: AbstractButton.TextOnly
+
+                Rectangle{
+                    id: backButadd
+                    x: -4
+                    y: -5
+                    width: 40
+                    height: 30
+                    color: "#2196F3"
+                    radius: 20
+                    Text{
+                        anchors.verticalCenter: parent.verticalCenter
+                        x: 15
+                        text: "<"
+                        font.pointSize: 14
+                        color: "#FEFEFE"
+                    }
+
+                    gradient: Gradient {
+//                            GradientStop { position: 0 ; color: addItemButton.pressed ? "#2196F3" : "#2196F3" }
+                        GradientStop { position: 0 ; color: addItemButton.pressed ? "#3092E3" : "#2196F3" }
+                    }
+
+                }
+
+                onClicked: {
+                    webAli.goBack()
+                }
+            }
+
+            Button{
+                id: refButton
+                x: 65
+                anchors.verticalCenter: parent.verticalCenter
+                width: 32
+                height: 20
+                display: AbstractButton.TextOnly
+
+                Rectangle{
+                    id: refButadd
+                    x: -4
+                    y: -5
+                    width: 40
+                    height: 30
+                    color: "#2196F3"
+                    radius: 20
+                    Text{
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: "O"
+                        font.pointSize: 20
+                        color: "#FEFEFE"
+                    }
+
+                    gradient: Gradient {
+//                            GradientStop { position: 0 ; color: addItemButton.pressed ? "#2196F3" : "#2196F3" }
+                        GradientStop { position: 0 ; color: addItemButton.pressed ? "#3092E3" : "#2196F3" }
+                    }
+
+                }
+
+                onClicked: {
+                    webAli.reload()
+                }
+            }
+
+            Button{
+                id: fortButton
+                x: 110
+                anchors.verticalCenter: parent.verticalCenter
+                width: 32
+                height: 20
+                display: AbstractButton.TextOnly
+
+                Rectangle{
+                    id: fortButadd
+                    x: -4
+                    y: -5
+                    width: 40
+                    height: 30
+                    color: "#2196F3"
+                    radius: 20
+                    Text{
+                        anchors.verticalCenter: parent.verticalCenter
+                        x: 15
+                        text: ">"
+                        font.pointSize: 14
+                        color: "#FEFEFE"
+                    }
+
+                    gradient: Gradient {
+//                            GradientStop { position: 0 ; color: addItemButton.pressed ? "#2196F3" : "#2196F3" }
+                        GradientStop { position: 0 ; color: addItemButton.pressed ? "#3092E3" : "#2196F3" }
+                    }
+
+                }
+
+                onClicked: {
+                    webAli.goForward()
+                }
+            }
+
+
+        }
 
 
         anchors.fill: parent
         WebEngineView{
             id: webAli
             visible: true
-            anchors.fill: parent
-           url: "https://www.aliexpress.com/"
+            anchors {top: headerAli.bottom; left: parent.left; right: parent.right; bottom: parent.bottom }
+            url: "https://www.aliexpress.com/"
             //url: "https://vk.com"
 
            onLinkHovered: {
@@ -113,30 +231,43 @@ Item {
             anchors {rightMargin: 20; bottomMargin: 20}
             color: "#3A3E52"
             radius: 50
-            Text{
-                y: 1
-                width: 85
-                height: 89
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: parent.horizontalCenter
+
+            Rectangle{
+                id: horPl
+                anchors.verticalCenter: addItemAli.verticalCenter
+                anchors.horizontalCenter: addItemAli.horizontalCenter
                 color: "#2481CE"
-                text: "+"
-                verticalAlignment: Text.AlignTop
-                anchors.verticalCenterOffset: -25
-                anchors.horizontalCenterOffset: 1
-//                verticalAlignment: Text.AlignTop
-                horizontalAlignment: Text.AlignHCenter
-                font.pointSize: 103
+                width: 50
+                height: 10
             }
+            Rectangle{
+                anchors.verticalCenter: addItemAli.verticalCenter
+                anchors.horizontalCenter: addItemAli.horizontalCenter
+                color: "#2481CE"
+                width: horPl.height
+                height: horPl.width
+            }
+
+//            Text{
+//                y: 1
+//                width: 85
+//                height: 89
+//                anchors.verticalCenter: parent.verticalCenter
+//                anchors.horizontalCenter: parent.horizontalCenter
+//                color: "#2481CE"
+//                text: "+"
+//                verticalAlignment: Text.AlignTop
+//                anchors.verticalCenterOffset: -25
+//                anchors.horizontalCenterOffset: 1
+////                verticalAlignment: Text.AlignTop
+//                horizontalAlignment: Text.AlignHCenter
+//                font.pointSize: 103
+//            }
 
             MouseArea{
                 anchors.fill: parent
-
                 onClicked: {
-
                     setItemAliToEbay(titleAli, price, discription, picArr, webAli.url)
-
-
                 }
             }
         }

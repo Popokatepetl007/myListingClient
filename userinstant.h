@@ -13,6 +13,7 @@ public:
     QString eBaytoken;
     QString payPalmail;
     int m_value;
+    int offset;
     static UserInstant* getInstance();
 };
 

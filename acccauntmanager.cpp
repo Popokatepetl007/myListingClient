@@ -25,6 +25,19 @@ void AcccauntManager::login(QString login, QString password){
 
 }
 
+void AcccauntManager::exitAcc()
+{
+    h->exit(UserInstant::getInstance()->appid);
+    UserInstant::getInstance()->payPalmail = "none";
+    UserInstant::getInstance()->appid ="none";
+    saveAppId();
+
+}
+
+void AcccauntManager::setPayPalmail(QString mail){
+    UserInstant::getInstance()->payPalmail = mail;
+    saveAppId();
+}
 
 void AcccauntManager::getItemAli(QString url)
 {
@@ -89,7 +102,7 @@ void AcccauntManager::writeJsFile(QString nameFil, QVariantMap map)
     qDebug()<<"--satart saving JS";
     qDebug()<<map;
     QString fromFile;
-    QFile *file = new QFile( "../../../" + nameFil);
+    QFile *file = new QFile( nameFil);
     if (file->exists()){
 
         if (!file->open(QIODevice::ReadOnly | QIODevice::Text)){
@@ -106,7 +119,7 @@ void AcccauntManager::writeJsFile(QString nameFil, QVariantMap map)
         document.setObject(object);
 
         qDebug()<< document;
-        QFile jsonFile( "../../../"+nameFil);
+        QFile jsonFile(nameFil);
         jsonFile.open(QIODevice::WriteOnly);
         jsonFile.write(document.toJson());
         jsonFile.close();
@@ -139,6 +152,7 @@ void AcccauntManager::resultEbayAuth(QJsonDocument document)
 }
 
 void AcccauntManager::resultREgistr(QJsonDocument document){
+    qDebug()<<document;
     emit toQmlRegistr(document["result"].toString());
 }
 
@@ -173,22 +187,22 @@ void AcccauntManager::getCategorys(){
 
 
     QDir dir(QDir::current());
-//        dir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
-//        dir.setSorting(QDir::Size | QDir::Reversed);
-//    dir.cdUp();
-//    dir.cdUp();
-//    dir.cdUp();
-//        QFileInfoList list = dir.entryInfoList();
-//        qDebug() << "     Bytes Filename";
-//        for (int i = 0; i < list.size(); ++i) {
-//            QFileInfo fileInfo = list.at(i);
-//            qDebug() << qPrintable(QString("%1 %2").arg(fileInfo.size(), 10)
-//                                                    .arg(fileInfo.fileName()));
+        dir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+        dir.setSorting(QDir::Size | QDir::Reversed);
+    dir.cdUp();
+    dir.cdUp();
+    dir.cdUp();
+        QFileInfoList list = dir.entryInfoList();
+        qDebug() << "     Bytes Filename";
+        for (int i = 0; i < list.size(); ++i) {
+            QFileInfo fileInfo = list.at(i);
+            qDebug() << qPrintable(QString("%1 %2").arg(fileInfo.size(), 10)
+                                                    .arg(fileInfo.fileName()));
 
-//        }
+        }
 
     qDebug()<< dir.currentPath();
-    QFile *file = new QFile( "../../../categorys.json");
+    QFile *file = new QFile( "categorys.json");
     if (file->exists()){
 //        file->setFileName("categorys.json");
         if (!file->open(QIODevice::ReadOnly | QIODevice::Text)){

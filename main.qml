@@ -75,7 +75,12 @@ ApplicationWindow {
     MouseArea{
         id: globalArea
         anchors.fill: parent
+        onClicked: {
+            accMenu.visible = false
+        }
     }
+
+
 
     Connections{
         target: delegateAcc
@@ -91,6 +96,7 @@ ApplicationWindow {
             console.log(listingView.width)
             delegateAcc.getListing()
             busyIndicator.running = true
+
         }
 
         onToQMLneedLogin:{
@@ -119,6 +125,12 @@ ApplicationWindow {
 
             messageBox.show()
             textError.text = err
+        }
+
+        onToQMLneedPayPalmail:{
+
+            paypalBox.show()
+            paypalBox.visible = true
         }
 
     }
@@ -162,6 +174,7 @@ ApplicationWindow {
                         aliView.visible = true
 //                        webAli.url = "https://www.aliexpress.com/"
                         listingView.visible = false
+                        ordIMg.visible = false
 //                        webAli.url = "https://www.aliexpress.com/item/Best-Selling-10-Pieces-Pack-juniper-bonsai-tree-potted-flowers-office-bonsai-purify-the-air-absorb/32470856363.html?spm=2114.search0104.3.46.7e292a744NmIuv&ws_ab_test=searchweb0_0,searchweb201602_2_10152_10151_10065_10068_10344_10342_10325_10546_10343_10340_10548_10341_5723217_10696_10084_10083_10618_10307_10059_100031_10103_10624_10623_10622_10621_10620,searchweb201603_12,ppcSwitch_7&algo_expid=0b2fb135-face-4c75-92d9-4fbfafb2cca7-6&algo_pvid=0b2fb135-face-4c75-92d9-4fbfafb2cca7&transAbTest=ae803_1&priceBeautifyAB=0"
                     }
                 }
@@ -194,10 +207,106 @@ ApplicationWindow {
                     onClicked: {
                         aliView.visible = false
                         listingView.visible = true
+                        ordIMg.visible = false
                         delegateAcc.getListing()
                         busyIndicator.running = true
                         listing.update()
 //                        webAli.url = "https://www.aliexpress.com/item/Best-Selling-10-Pieces-Pack-juniper-bonsai-tree-potted-flowers-office-bonsai-purify-the-air-absorb/32470856363.html?spm=2114.search0104.3.46.7e292a744NmIuv&ws_ab_test=searchweb0_0,searchweb201602_2_10152_10151_10065_10068_10344_10342_10325_10546_10343_10340_10548_10341_5723217_10696_10084_10083_10618_10307_10059_100031_10103_10624_10623_10622_10621_10620,searchweb201603_12,ppcSwitch_7&algo_expid=0b2fb135-face-4c75-92d9-4fbfafb2cca7-6&algo_pvid=0b2fb135-face-4c75-92d9-4fbfafb2cca7&transAbTest=ae803_1&priceBeautifyAB=0"
+                    }
+                }
+            }
+
+            Rectangle{
+                id: ordersBut
+                x: 0
+                y: 110
+                width: 60
+                height: 55
+                color: '#2F3242'
+
+                Image {
+                    id: imagButOR
+                    height: 8
+                    anchors.rightMargin: 18
+                    anchors.bottomMargin: 18
+                    anchors.fill: parent
+                    anchors.margins: 20
+                    source: "web/shipping.png"
+                }
+
+                MouseArea{
+                    anchors.fill: parent
+                    onReleased: {
+                        mlBut.color =  '#2F3242'
+                        aliBut.color = '#2F3242'
+                    }
+
+                    onClicked: {
+                        aliView.visible = false
+                        listingView.visible = false
+                        ordIMg.visible = true
+                    }
+                }
+            }
+
+            Rectangle{
+                id: statsBut
+                x: 0
+                y: 165
+                width: 60
+                height: 55
+                color: '#2F3242'
+
+                Image {
+                    id: imagButST
+                    height: 8
+                    anchors.rightMargin: 18
+                    anchors.bottomMargin: 18
+                    anchors.fill: parent
+                    anchors.margins: 20
+                    source: "web/stat.png"
+                }
+
+                MouseArea{
+                    anchors.fill: parent
+                    onReleased: {
+                        mlBut.color =  '#2F3242'
+                        aliBut.color = '#2F3242'
+                    }
+
+                    onClicked: {
+
+                    }
+                }
+            }
+
+            Rectangle{
+                id: messBut
+                x: 0
+                y: 220
+                width: 60
+                height: 55
+                color: '#2F3242'
+
+                Image {
+                    id: imagButMS
+                    height: 8
+                    anchors.rightMargin: 18
+                    anchors.bottomMargin: 18
+                    anchors.fill: parent
+                    anchors.margins: 20
+                    source: "web/mail.png"
+                }
+
+                MouseArea{
+                    anchors.fill: parent
+                    onReleased: {
+                        mlBut.color =  '#2F3242'
+                        aliBut.color = '#2F3242'
+                    }
+
+                    onClicked: {
+
                     }
                 }
             }
@@ -225,6 +334,86 @@ ApplicationWindow {
                 source: "web/logo.png"
 
             }
+
+            Rectangle{
+                id:accMenu
+                visible: false
+                anchors.right: accSetBut.right
+                anchors.top: accSetBut.bottom
+                width: 200
+                height: 80
+
+//                MouseArea{
+//                    id: munuArea
+//                    z: 4
+//                    anchors.fill: mainView
+//                    onClicked: {
+//                        console.log(munuArea.mouseY)
+//                    }
+//                }
+
+                Button {
+                    id: settingBut
+                    x: 0
+                    y: 0
+                    width: 200
+                    height: 40
+                    text: qsTr("Настройки")
+                }
+
+                Button {
+                    id: exitBut
+                    anchors.left: accMenu.left
+                    anchors.top: settingBut.bottom
+                    width: 200
+                    height: 40
+                    text: qsTr("Выход")
+                    onClicked: {
+                        delegateAcc.exitAcc()
+                        mainView.visible = false
+                        loginView.visible = true
+                        accMenu.visible = false
+                    }
+                }
+
+
+            }
+
+            Rectangle{
+                id: accSetBut
+                anchors.right: parent.right
+                y: 0
+                width: 60
+                height: 55
+                color: '#2F3242'
+
+                Image {
+                    id: imagButAccSet
+
+                    anchors.rightMargin: 17
+                    anchors.bottomMargin: 13
+                    anchors.fill: parent
+                    anchors.margins: 20
+                    source: "web/login.png"
+                }
+
+                MouseArea{
+                    anchors.fill: parent
+                    onReleased: {
+                        accSetBut.color = '#2F3242'
+                    }
+
+                    onPressed: {
+                        accSetBut.color =  "#2B2D3C"
+                    }
+
+                    onClicked: {
+                        accMenu.visible = !accMenu.visible
+                    }
+                }
+            }
+
+
 
 
 
@@ -300,6 +489,8 @@ ApplicationWindow {
                     }
             }
 
+
+
             Rectangle{
                 id: headerWork
                 x: 0
@@ -354,6 +545,17 @@ ApplicationWindow {
                         addItemeBay.show()
                     }
                 }
+            }
+
+            Image {
+                id: ordIMg
+                visible: false
+
+                z: 2
+                anchors {top: headerWork.bottom; left: workView.left; right: workView.right}
+                height: 700
+//                width: 900
+                source: "web/fakeorderspng.png"
             }
 
             Rectangle{
@@ -601,6 +803,40 @@ ApplicationWindow {
             y: 10
             text: "error"
             wrapMode: Text.WrapAnywhere
+        }
+
+    }
+
+    Window{
+        id: paypalBox
+        width: 550
+        height: 130
+        title: "Need PayPal email"
+        color: "#2B2D3C"
+        TextField{
+            id: paymail
+            x: 10
+            y: 30
+            width: 530
+            height: 30
+            font.pointSize: 10
+            placeholderText: "PayPay email"
+            selectByMouse: true
+
+        }
+        Button{
+            anchors.horizontalCenter: paymail.horizontalCenter
+            y: 80
+
+            width: 110
+            height: 30
+            text: "Ok"
+            onClicked: {
+                if (paymail.text !== ""){
+                    delegateAcc.setPayPalmail(paymail.text)
+                    paypalBox.close()
+                }
+            }
         }
 
     }

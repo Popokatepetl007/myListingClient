@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QJsonDocument>
+#include <QDir>
 
 UserInstant* UserInstant::instance = 0;
 
@@ -16,8 +17,13 @@ UserInstant* UserInstant::getInstance(){
 UserInstant::UserInstant(){
     qDebug()<<"i started";
     m_value = 800;
+    offset = 0;
     QString fromFile;
-    QFile *file = new QFile( "../../../setting.json");
+    QDir dir("");
+//    qDebug()<<dir.cdUp();
+    qDebug()<<dir.path();
+
+    QFile *file = new QFile( "setting.json");
     if (file->exists()){
 
         if (!file->open(QIODevice::ReadOnly | QIODevice::Text)){
@@ -28,7 +34,7 @@ UserInstant::UserInstant(){
 
         QJsonDocument sd = QJsonDocument::fromJson(fromFile.toUtf8());
         qWarning() << sd.isNull();
-        qDebug()<<sd;
+        qDebug()<<sd["paypalemail"].toString();
         qDebug()<<sd["appid"].toString();
         appid = sd["appid"].toString();
         payPalmail = sd["paypalemail"].toString();

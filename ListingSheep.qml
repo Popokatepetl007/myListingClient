@@ -42,9 +42,9 @@ Item {
                             Label {
                                 id: name
                                 anchors.verticalCenter: parent.verticalCenter
-                                width: 300
+                                width: listIthem.width/5
                                 color: "#fefefe"
-                                anchors { left: imageLi.right; margins: 15 }
+                                anchors { left: imageLi.right; margins: listIthem.width/18 }
                                 text: model.title
                                 padding: 0
                                 font.capitalization: Font.Capitalize
@@ -58,7 +58,7 @@ Item {
                                 id: price
                                 color: "#fefefe"
                                 anchors.verticalCenter: parent.verticalCenter
-                                anchors { left: name.right; margins: 30 }
+                                anchors { left: name.right; margins: listIthem.width/18 }
                                 text: "$"+model.valuePrice
                             }
 
@@ -66,7 +66,7 @@ Item {
                                 id: quan
                                 color: "#fefefe"
                                 anchors.verticalCenter: parent.verticalCenter
-                                anchors { left: price.right; margins: 15 }
+                                anchors { left: price.right; margins: 300 }
                                 text: model.Quantity
                             }
 
@@ -74,7 +74,7 @@ Item {
                                 id: quanAv
                                 color: "#fefefe"
                                 anchors.verticalCenter: parent.verticalCenter
-                                anchors { left: quan.right; margins: 15 }
+                                anchors { left: quan.right; margins: listIthem.width/18 }
                                 text: model.QuantityAvailable
                             }
 
@@ -82,7 +82,7 @@ Item {
                                 id: quanWc
                                 color: "#fefefe"
                                 anchors.verticalCenter: parent.verticalCenter
-                                anchors { left: quanAv.right; margins: 15 }
+                                anchors { left: quanAv.right; margins: listIthem.width/18 }
                                 text: model.WatchCount
                             }
                         }

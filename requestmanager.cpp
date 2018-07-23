@@ -59,6 +59,7 @@ void RequestManager::auth(QString login, QString password)
 void RequestManager::registr(QString login, QString password, QString email){
     QByteArray param = QString("login=%1&password=%2&email=%3").arg(login, password, email).toUtf8();
     replyAcc = manager->post(createRequest(QUrl(host+"/rgstr/")), param);
+    qDebug()<<"waitfin0";
     QObject::connect(replyAcc,SIGNAL(finished()), this, SLOT(replyRgstr()));
     QObject::connect(replyAcc, SIGNAL(readyRead()), this, SLOT(replRead()));
 }
@@ -72,11 +73,11 @@ void RequestManager::enter()
     QObject::connect(replyAcc, SIGNAL(readyRead()), this, SLOT(replRead()));
 }
 
-void RequestManager::exit()
+void RequestManager::exit(QString appid)
 {
-    QByteArray param = QString("appid=%1&exit=yes").arg("0eCDB3c1").toUtf8();
+    QByteArray param = QString("appid=%1&exit=yes").arg(appid).toUtf8();
     replyAcc = manager->post(createRequest(QUrl(host+"/auth/")), param);
-    QObject::connect(replyAcc,SIGNAL(finished()), this, SLOT(replyEnter()));
+//    QObject::connect(replyAcc,SIGNAL(finished()), this, SLOT(replyEnter()));
     QObject::connect(replyAcc, SIGNAL(readyRead()), this, SLOT(replRead()));
 }
 
@@ -96,7 +97,7 @@ void RequestManager::waitToken()
 void RequestManager::getListingreq()
 {
     qDebug()<<"start getListing";
-    QByteArray param = QString("appid=%1").arg(UserInstant::getInstance()->appid).toUtf8();
+    QByteArray param = QString("appid=%1&offset=%2").arg(UserInstant::getInstance()->appid, QString(UserInstant::getInstance()->offset)).toUtf8();
     replyAcc = manager->post(createRequest(QUrl(host+"/ebay/getlisting")), param);
     QObject::connect(replyAcc, SIGNAL(uploadProgress(qint64,qint64)),this, SLOT(tete(qint64,qint64)));
     QObject::connect(replyAcc,SIGNAL(finished()), this, SLOT(replListing()));

@@ -27,5 +27,6 @@
         <file>ListingSheep.qml</file>
         <file>addItemeBay.qml</file>
         <file>aliViewFile.qml</file>
+        <file>web/fakeorderspng.png</file>
     </qresource>
 </RCC>

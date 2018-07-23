@@ -8,8 +8,10 @@ import QtQuick.Dialogs 1.2
 
 
 Item {
-    width: 800
-    height: 600
+//    width: 800
+//    height: 600
+    width: Screen.desktopAvailableWidth/1.8
+    height: Screen.desktopAvailableHeight/1.365
 
 
     MouseArea{
@@ -48,8 +50,13 @@ Item {
         target: main
         onSendToAdd:{
             aliTitleField.text = title
-            var result = discript.replace(/<[^>]+>/g,'')
+            var result = discript.replace(/<[^>]+>/g,'<br>')
             discriptionEdit.text = result
+
+            console.log("--------discription---------")
+            console.log(discriptionEdit.text)
+            console.log("----------------------------")
+
             priceAliField.text = parseFloat(price)
             aliurl= aliUrl
 
@@ -190,8 +197,10 @@ Item {
     }
 
     Rectangle{
-        width: 800
-        height: 600
+//        width: 800
+//        height: 600
+        width: Screen.desktopAvailableWidth/1.8
+        height: Screen.desktopAvailableHeight/1.365
         id: addItemView
         color: "#3A3E52"
 
@@ -200,12 +209,14 @@ Item {
             id: titleField
             x: 25
             y: 45
-            width: 646
+//            width: 646
+            anchors {right: parent.right; rightMargin: 30; left: parent.left; leftMargin: 30}
             height: 25
             text: qsTr("")
             font.pointSize: 10
             placeholderText: "Title"
             selectByMouse: true
+            maximumLength: 80
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.IBeamCursor
@@ -263,7 +274,7 @@ Item {
             id: aliTitleField
             x: 25
             y: 104
-            width: 646
+            anchors {right: parent.right; rightMargin: 30; left: parent.left; leftMargin: 30}
             height: 25
             text: qsTr("")
             font.pointSize: 10
@@ -293,7 +304,7 @@ Item {
             Rectangle{
                 height: 40
                 width: 646
-                color: "green"
+                color: "#585C6F"
                 Label{
                     id: comLab
                     x: 10
@@ -407,6 +418,21 @@ Item {
         }
 
         Button {
+            id: sendData1
+//                x: 487
+            //y: 549
+            anchors.bottom: sendData.bottom
+            anchors.right: sendData.left
+            anchors.rightMargin: 30
+            width: 112
+            height: 29
+            text: qsTr("Отмена")
+            onClicked: {
+                addItemeBay.close()
+            }
+        }
+
+        Button {
             id: sendData
             x: 639
             y: 549
@@ -491,8 +517,9 @@ Item {
             }
 
             Button{
+                id: butAdd
                 anchors.right: urF.right
-                y: 80
+//                anchors.bottom: discriptionEdit.bottom
                 height: 30
                 width:80
                 text: "Добавить"
@@ -510,6 +537,8 @@ Item {
 
                 }
             }
+
+
 
         }
 
@@ -547,7 +576,7 @@ Item {
             y: 262
 
             width: 327
-            height: 295
+            height: addItemView.height/2.1
             color: "white"
 
         ScrollView{
@@ -556,7 +585,7 @@ Item {
             y: 0
 
             width: 327
-            height: 295
+            height: addItemView.height/2.1
 
 
         TextArea {
@@ -564,7 +593,7 @@ Item {
             x: 0
             y: 0
             width: 327
-            height: 295
+            height: addItemView.height/2.1
             text: ""
             renderType: Text.QtRendering
 
@@ -667,17 +696,7 @@ Item {
             }
         }
 
-        Button {
-            id: sendData1
-            x: 487
-            y: 549
-            width: 112
-            height: 29
-            text: qsTr("Отмена")
-            onClicked: {
-                addItemeBay.close()
-            }
-        }
+
 
         Label {
             id: label4
